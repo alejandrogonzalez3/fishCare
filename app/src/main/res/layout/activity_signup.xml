@@ -12,7 +12,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
         android:contentDescription="fish icon"
-        android:src="@drawable/ic_fish"
+        android:src="@drawable/ic_fish_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -140,7 +140,7 @@
         android:layout_marginRight="40dp"
         android:layout_marginBottom="20dp"
         android:text="Sign Up"
-        android:backgroundTint="@color/blue_400"
+        android:background="@drawable/rounded_buton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

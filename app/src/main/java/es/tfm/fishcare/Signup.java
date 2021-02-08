@@ -27,6 +27,16 @@ public class Signup extends AppCompatActivity {
         email = findViewById(R.id.email);
         signUp = findViewById(R.id.signupButton);
 
+        userName.bringToFront();
+        password.bringToFront();
+        rePassword.bringToFront();
+        serverAddress.bringToFront();
+        instanceName.bringToFront();
+        phoneNumber.bringToFront();
+        email.bringToFront();
+
+        signUp.bringToFront();
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

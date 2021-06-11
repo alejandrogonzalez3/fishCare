@@ -6,4 +6,7 @@
     <color name="blue_400_gray_friend">#8098CDF9</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="ok">#64ec39</color>
+    <color name="warning">#FF9800</color>
+    <color name="danger">#F10606</color>
 </resources>

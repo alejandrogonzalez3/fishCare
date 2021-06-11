@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <TextView
+        android:id="@+id/sensor_value_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="5dp"
+        android:layout_marginTop="20dp"
+        android:text="title list item"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/sensor_value_item_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:text="value list item"
+        android:layout_toEndOf="@+id/sensor_value_item_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</RelativeLayout>

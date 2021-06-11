@@ -3,6 +3,10 @@
     <color name="blue_400_light">#80d6ff</color>
     <color name="blue_400">#42a5f5</color>
     <color name="blue_400_dark">#0077c2</color>
+    <color name="blue_400_gray_friend">#8098CDF9</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="ok">#64ec39</color>
+    <color name="warning">#FF9800</color>
+    <color name="danger">#F10606</color>
 </resources>

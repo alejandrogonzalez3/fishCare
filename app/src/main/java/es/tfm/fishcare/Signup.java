@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 public class Signup extends AppCompatActivity {
     EditText userName, password, rePassword, serverAddress, instanceName, phoneNumber, email;
@@ -26,6 +27,16 @@ public class Signup extends AppCompatActivity {
         phoneNumber = findViewById(R.id.phoneNumber);
         email = findViewById(R.id.email);
         signUp = findViewById(R.id.signupButton);
+
+        userName.bringToFront();
+        password.bringToFront();
+        rePassword.bringToFront();
+        serverAddress.bringToFront();
+        instanceName.bringToFront();
+        phoneNumber.bringToFront();
+        email.bringToFront();
+
+        signUp.bringToFront();
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,6 +2,7 @@ package es.tfm.fishcare;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -38,11 +39,10 @@ public class Signup extends AppCompatActivity {
 
         signUp.bringToFront();
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkFormData();
-            }
+        signUp.setOnClickListener(v -> {
+            //checkFormData();
+            Intent intent = new Intent(getApplicationContext(), HatcheryConfig.class);
+            startActivity(intent);
         });
     }
 

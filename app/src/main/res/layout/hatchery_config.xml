@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/species_text"
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:text="Especie"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/species_text"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/rounded_spinner">
+        <Spinner
+            android:id="@+id/specie_spinner"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/species_text" />
+
+    <TextView
+        android:id="@+id/tds_text"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="40dp"
+        android:text="TDS (ppm)"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <EditText
+        android:id="@+id/tds_min_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:gravity="right"
+        android:hint="200"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/tds_text"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <EditText
+        android:id="@+id/tds_max_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:gravity="right"
+        android:hint="400"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/tds_min_value"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/pH_text"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="60dp"
+        android:text="pH"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tds_text" />
+
+    <EditText
+        android:id="@+id/pH_min_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="right"
+        android:hint="4"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/pH_text"
+        app:layout_constraintTop_toBottomOf="@+id/tds_min_value" />
+
+    <EditText
+        android:id="@+id/pH_max_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="right"
+        android:hint="7"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/pH_min_value"
+        app:layout_constraintTop_toBottomOf="@+id/tds_max_value" />
+
+    <TextView
+        android:id="@+id/do_text"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="60dp"
+        android:text="dO (mg/L)"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pH_text" />
+
+    <EditText
+        android:id="@+id/do_min_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="right"
+        android:hint="10"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/do_text"
+        app:layout_constraintTop_toBottomOf="@+id/pH_min_value" />
+
+    <EditText
+        android:id="@+id/do_max_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="right"
+        android:hint="20"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/do_min_value"
+        app:layout_constraintTop_toBottomOf="@+id/pH_max_value" />
+
+    <TextView
+        android:id="@+id/temperature_text"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="60dp"
+        android:text="Temperature (ºC)"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/do_text" />
+
+    <EditText
+        android:id="@+id/temperature_min_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="right"
+        android:hint="18"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/temperature_text"
+        app:layout_constraintTop_toBottomOf="@+id/do_min_value" />
+
+    <EditText
+        android:id="@+id/temperature_max_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="right"
+        android:hint="30"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/temperature_min_value"
+        app:layout_constraintTop_toBottomOf="@+id/do_max_value" />
+
+    <TextView
+        android:id="@+id/salinity_text"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="60dp"
+        android:text="Salinity (ppt)"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/temperature_text" />
+
+    <EditText
+        android:id="@+id/salinity_min_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="right"
+        android:hint="20"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/salinity_text"
+        app:layout_constraintTop_toBottomOf="@+id/temperature_min_value" />
+
+    <EditText
+        android:id="@+id/salinity_max_value"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="right"
+        android:hint="30"
+        android:inputType="numberDecimal"
+        android:minWidth="50dp"
+        app:layout_constraintStart_toEndOf="@+id/salinity_min_value"
+        app:layout_constraintTop_toBottomOf="@+id/temperature_max_value" />
+
+    <Button
+        android:id="@+id/continueConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/rounded_buton"
+        android:backgroundTint="@color/blue_400"
+        android:text="Continue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

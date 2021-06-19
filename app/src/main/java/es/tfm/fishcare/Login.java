@@ -44,6 +44,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 //checkFormData();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                // Intent intent = new Intent(getApplicationContext(), HatcheryConfig.class);
                 startActivity(intent);
             }
         });

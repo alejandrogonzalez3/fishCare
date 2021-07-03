@@ -8,12 +8,14 @@ public class SensorValue {
     private String value;
     private Date date;
     private SensorValueState state;
+    private String units;
 
-    public SensorValue(String title, String value, Date date, SensorValueState state) {
+    public SensorValue(String title, String value, Date date, SensorValueState state, String units) {
         this.title = title;
         this.value = value;
         this.date = date;
         this.state = state;
+        this.units = units;
     }
 
     public SensorValueState getState() {
@@ -46,5 +48,13 @@ public class SensorValue {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getUnits() {
+        return units;
+    }
+
+    public void setUnits(String units) {
+        this.units = units;
     }
 }

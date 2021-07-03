@@ -9,12 +9,22 @@
         android:orientation="vertical">
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/tdsChart"
+            android:id="@+id/doChart"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/pHChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/temperatureChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/conductivityChart"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
     </LinearLayout>

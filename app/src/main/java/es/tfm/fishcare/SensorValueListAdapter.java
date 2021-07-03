@@ -15,7 +15,6 @@ public class SensorValueListAdapter extends BaseAdapter {
     private final Activity context;
     private final SensorValue[] sensorValues;
 
-
     public SensorValueListAdapter(Activity context, SensorValue[] sensorValues) {
         this.context = context;
         this.sensorValues = sensorValues;
@@ -45,21 +44,28 @@ public class SensorValueListAdapter extends BaseAdapter {
 
         TextView title = convertView.findViewById(R.id.sensor_value_item_title);
         TextView value = convertView.findViewById(R.id.sensor_value_item_value);
+        TextView units = convertView.findViewById(R.id.sensor_value_item_units);
 
         title.setText(sensorValues[position].getTitle());
         value.setText(sensorValues[position].getValue());
+        if (!sensorValues[position].getUnits().equals("")) {
+            units.setText("(" + sensorValues[position].getUnits() + ")");
+        }
+        else {
+            units.setText("-");
+        }
 
         switch (sensorValues[position].getState()) {
             case OK :
-                title.setTextColor(resolveColor(R.color.ok));
+                units.setTextColor(resolveColor(R.color.ok));
                 value.setTextColor(resolveColor(R.color.ok));
                 break;
             case WARNING :
-                title.setTextColor(resolveColor(R.color.warning));
+                units.setTextColor(resolveColor(R.color.warning));
                 value.setTextColor(resolveColor(R.color.warning));
                 break;
             case DANGER :
-                title.setTextColor(resolveColor(R.color.danger));
+                units.setTextColor(resolveColor(R.color.danger));
                 value.setTextColor(resolveColor(R.color.danger));
                 break;
         }

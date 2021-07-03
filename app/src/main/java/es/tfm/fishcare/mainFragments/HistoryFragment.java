@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
@@ -43,7 +44,7 @@ import es.tfm.fishcare.SensorValueListAdapter;
  */
 public class HistoryFragment extends Fragment {
 
-    LineChart tdsChart, phChart;
+    LineChart doChart, phChart, temperatureChart, conductivityChart;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -70,33 +71,43 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Setup any handles to view objects here
-        tdsChart = getActivity().findViewById(R.id.tdsChart);
+        doChart = getActivity().findViewById(R.id.doChart);
         phChart = getActivity().findViewById(R.id.pHChart);
-        configChart(tdsChart, "TDS (ppm)");
-        renderData(215f, 70f, 350f, 10f, tdsChart);
-        setData(getTdsValues(), tdsChart, R.drawable.fade_blue);
+        temperatureChart = getActivity().findViewById(R.id.temperatureChart);
+        conductivityChart = getActivity().findViewById(R.id.conductivityChart);
+
+        configChart(doChart, "dO (%)");
+        renderData(140f, 80f, 200f, 10f, doChart);
+        setData(getDoValues(), doChart, R.drawable.fade_blue);
 
         configChart(phChart, "pH");
         renderData(8f, 4f, 10f, 10f, phChart);
-        setData(getpHValues(), phChart, R.drawable.fade_red);
+        setData(getpHValues(), phChart, R.drawable.fade_green);
+
+        configChart(temperatureChart, "Temperature");
+        renderData(24f, 8f, 30f, 10f, temperatureChart);
+        setData(getTemperatureValues(), temperatureChart, R.drawable.fade_red);
+
+        configChart(conductivityChart, "Conductivity");
+        renderData(1.5f, 50f, 60f, 10f, conductivityChart);
+        setData(getConductivityValues(), conductivityChart, R.drawable.fade_yellow);
     }
 
     // Get real values for each Chart
-    public ArrayList<Entry> getTdsValues() {
+    public ArrayList<Entry> getDoValues() {
         ArrayList<Entry> values = new ArrayList<>();
         values.add(new Entry(1, 50));
         values.add(new Entry(2, 100));
         values.add(new Entry(3, 80));
         values.add(new Entry(4, 120));
         values.add(new Entry(5, 110));
-        values.add(new Entry(7, 150));
-        values.add(new Entry(8, 250));
-        values.add(new Entry(9, 190));
+        values.add(new Entry(6, 120));
+        values.add(new Entry(7, 110));
+        values.add(new Entry(8, 100));
 
         return values;
     }
 
-    // Get real values for each Chart
     public ArrayList<Entry> getpHValues() {
         ArrayList<Entry> values = new ArrayList<>();
         values.add(new Entry(1, 5));
@@ -104,12 +115,49 @@ public class HistoryFragment extends Fragment {
         values.add(new Entry(3, 6.5f));
         values.add(new Entry(4, 7));
         values.add(new Entry(5, 7.5f));
-        values.add(new Entry(7, 6));
-        values.add(new Entry(8, 5));
-        values.add(new Entry(9, 4));
+        values.add(new Entry(6, 6));
+        values.add(new Entry(7, 5));
+        values.add(new Entry(8, 4));
 
         return values;
     }
+
+    public ArrayList<Entry> getTemperatureValues() {
+        ArrayList<Entry> values = new ArrayList<>();
+        values.add(new Entry(1, 18));
+        values.add(new Entry(2, 19));
+        values.add(new Entry(3, 20));
+        values.add(new Entry(4, 21));
+        values.add(new Entry(5, 19));
+        values.add(new Entry(6, 18.5f));
+        values.add(new Entry(7, 19.2f));
+        values.add(new Entry(8, 20));
+
+        return values;
+    }
+
+    public ArrayList<Entry> getConductivityValues() {
+        ArrayList<Entry> values = new ArrayList<>();
+        values.add(new Entry(1, 10));
+        values.add(new Entry(2, 15));
+        values.add(new Entry(3, 20));
+        values.add(new Entry(4, 21.5f));
+        values.add(new Entry(5, 19));
+        values.add(new Entry(6, 18.5f));
+        values.add(new Entry(7, 19.2f));
+        values.add(new Entry(8, 28));
+
+        return values;
+    }
+
+    // Get each chart Date Values (now used on each chart)
+/*    public ArrayList<String> getDateValues() {
+
+        ArrayList<String> labels = new ArrayList<>();
+        for (int i = 0; i < 8; i++)
+            labels.add(i + " 15/06/21");
+        return labels;
+    }*/
 
     public void configChart(LineChart chart, String description) {
         chart.setTouchEnabled(true);
@@ -129,6 +177,7 @@ public class HistoryFragment extends Fragment {
         xAxis.setAxisMaximum(xAxisMax);
         xAxis.setAxisMinimum(0f);
         xAxis.setDrawLimitLinesBehindData(true);
+/*        xAxis.setValueFormatter(new IndexAxisValueFormatter(getDateValues()));*/
 
         LimitLine ll1 = new LimitLine(maximumLimit, "Maximum Limit");
         ll1.setLineWidth(4f);
@@ -192,6 +241,4 @@ public class HistoryFragment extends Fragment {
             chart.setData(data);
         }
     }
-
-
 }

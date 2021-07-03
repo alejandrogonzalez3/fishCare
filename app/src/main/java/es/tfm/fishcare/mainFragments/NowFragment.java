@@ -32,7 +32,13 @@ public class NowFragment extends Fragment {
     private SensorValue[] getSensorValues() {
         // Get real sensor values from REST request
         // Get maximum and minimum values allowed
-        return new SensorValue[]{new SensorValue("tds", "220", new Date(), SensorValueState.OK), new SensorValue("pH", "7,5", new Date(), SensorValueState.WARNING)};
+        return new SensorValue[]{
+                new SensorValue("dO", "95", new Date(), SensorValueState.OK, "%"),
+                new SensorValue("pH", "7,5", new Date(), SensorValueState.WARNING, ""),
+                new SensorValue("Conductivity", "10,5", new Date(), SensorValueState.OK, "mS/cm"),
+                new SensorValue("Temperature", "20", new Date(), SensorValueState.OK, "ºC"),
+                new SensorValue("Water flow", "yes", new Date(), SensorValueState.OK, ""),
+        };
     }
 
     public static NowFragment newInstance(String param1, String param2) {
@@ -43,7 +49,6 @@ public class NowFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override

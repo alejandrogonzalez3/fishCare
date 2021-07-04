@@ -4,19 +4,18 @@ import java.util.Date;
 
 public class SensorValue {
 
-    private String title;
     private String value;
     private Date date;
     private SensorValueState state;
-    private String units;
+    private Sensor sensor;
 
-    public SensorValue(String title, String value, Date date, SensorValueState state, String units) {
-        this.title = title;
+    public SensorValue(String value, Date date, SensorValueState state) {
         this.value = value;
         this.date = date;
         this.state = state;
-        this.units = units;
     }
+
+    public SensorValue() {}
 
     public SensorValueState getState() {
         return state;
@@ -24,14 +23,6 @@ public class SensorValue {
 
     public void setState(SensorValueState state) {
         this.state = state;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getValue() {
@@ -50,11 +41,11 @@ public class SensorValue {
         this.date = date;
     }
 
-    public String getUnits() {
-        return units;
+    public Sensor getSensor() {
+        return sensor;
     }
 
-    public void setUnits(String units) {
-        this.units = units;
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 }

@@ -46,10 +46,10 @@ public class SensorValueListAdapter extends BaseAdapter {
         TextView value = convertView.findViewById(R.id.sensor_value_item_value);
         TextView units = convertView.findViewById(R.id.sensor_value_item_units);
 
-        title.setText(sensorValues[position].getTitle());
+        title.setText(sensorValues[position].getSensor().getName());
         value.setText(sensorValues[position].getValue());
-        if (!sensorValues[position].getUnits().equals("")) {
-            units.setText("(" + sensorValues[position].getUnits() + ")");
+        if (!("").equals(sensorValues[position].getSensor().getUnits())) {
+            units.setText("(" + sensorValues[position].getSensor().getUnits() + ")");
         }
         else {
             units.setText("-");

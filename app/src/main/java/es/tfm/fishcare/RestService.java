@@ -24,4 +24,25 @@ public class RestService {
         urlBuilder.addQueryParameter("size", "15");
         return urlBuilder;
     }
+
+    public static HttpUrl.Builder getActuatorUrlBuilder() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
+        urlBuilder.addPathSegment("actuator");
+        urlBuilder.addPathSegment("");
+        return urlBuilder;
+    }
+
+    public static HttpUrl.Builder getActuatorOnUrlBuilder() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
+        urlBuilder.addPathSegment("actuator");
+        urlBuilder.addPathSegment("on");
+        return urlBuilder;
+    }
+
+    public static HttpUrl.Builder getActuatorOffUrlBuilder() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
+        urlBuilder.addPathSegment("actuator");
+        urlBuilder.addPathSegment("off");
+        return urlBuilder;
+    }
 }

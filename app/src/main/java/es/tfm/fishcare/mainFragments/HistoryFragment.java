@@ -109,7 +109,7 @@ public class HistoryFragment extends Fragment {
         getSensorValues(conductivityChart,"test", R.drawable.fade_yellow);
     }
 
-    public void getSensorValues(LineChart chart, String sensorName, int drawableId) {
+    private void getSensorValues(LineChart chart, String sensorName, int drawableId) {
         HttpUrl.Builder urlBuilder = RestService.getSensorValueUrlBuilder();
         urlBuilder.addQueryParameter("sensorName", sensorName);
         String url = urlBuilder.build().toString();

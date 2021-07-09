@@ -61,7 +61,6 @@ public class HistoryFragment extends Fragment {
 
     LineChart doChart, phChart, temperatureChart, conductivityChart;
     OkHttpClient client = RestService.getClient();
-    //RestService restService = new RestService();
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -93,20 +92,20 @@ public class HistoryFragment extends Fragment {
         conductivityChart = getActivity().findViewById(R.id.conductivityChart);
 
         configChart(doChart, "dO (%)");
-        renderData(140f, 80f, 200f, 10f, doChart);
+        renderData(140f, 80f, 200f, 15f, doChart);
         getSensorValues(doChart,"test", R.drawable.fade_blue);
 
         configChart(phChart, "pH");
-        renderData(8f, 4f, 10f, 10f, phChart);
+        renderData(8f, 4f, 10f, 15f, phChart);
         getSensorValues(phChart,"test", R.drawable.fade_green);
 
         configChart(temperatureChart, "Temperature");
-        renderData(24f, 8f, 30f, 10f, temperatureChart);
+        renderData(24f, 8f, 30f, 15f, temperatureChart);
         getSensorValues(temperatureChart,"test", R.drawable.fade_red);
 
 
         configChart(conductivityChart, "Conductivity");
-        renderData(1.5f, 50f, 60f, 10f, conductivityChart);
+        renderData(1.5f, 50f, 60f, 15f, conductivityChart);
         getSensorValues(conductivityChart,"test", R.drawable.fade_yellow);
     }
 

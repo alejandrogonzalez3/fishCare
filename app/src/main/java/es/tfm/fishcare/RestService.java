@@ -15,4 +15,13 @@ public class RestService {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
         return urlBuilder;
     }
+
+    public static HttpUrl.Builder getSensorValueUrlBuilder() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
+        urlBuilder.addPathSegment("sensorValue");
+        urlBuilder.addPathSegment("");
+        urlBuilder.addQueryParameter("page", "0");
+        urlBuilder.addQueryParameter("size", "15");
+        return urlBuilder;
+    }
 }

@@ -3,7 +3,7 @@
     android:paddingBottom="16dp"
     android:paddingTop="16dp"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="80dp">
 
     <ImageView
         android:id="@+id/notification_item_image"
@@ -15,23 +15,13 @@
         android:contentDescription="image list item" />
 
     <TextView
-        android:id="@+id/notification_item_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingTop="5dp"
-        android:text="title list item"
-        android:layout_toEndOf="@id/notification_item_image"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
         android:id="@+id/notification_item_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingTop="5dp"
         android:text="body list item"
+        android:textSize="14sp"
         android:layout_toEndOf="@id/notification_item_image"
-        android:layout_below="@id/notification_item_title"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>

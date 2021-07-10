@@ -1,6 +1,9 @@
 package es.tfm.fishcare;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.app.Notification;
 import android.content.Intent;
@@ -11,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.concurrent.TimeUnit;
 
 import es.tfm.fishcare.notifications.NotificationUtils;
 
@@ -56,6 +61,11 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Service worker to pull data from the backend...
+        // ... and notify on background if there is any problem.
+        PeriodicWorkRequest pullDataWorkRequest = new PeriodicWorkRequest.Builder(PullDataWorker.class,15, TimeUnit.MINUTES, 5, TimeUnit.MINUTES).build();
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("Pull sensor data", ExistingPeriodicWorkPolicy.KEEP, pullDataWorkRequest);
     }
 
     boolean isEmpty(EditText field) {

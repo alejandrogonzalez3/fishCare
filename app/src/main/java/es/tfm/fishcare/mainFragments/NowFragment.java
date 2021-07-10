@@ -39,7 +39,7 @@ import okhttp3.Response;
  * create an instance of this fragment.
  */
 public class NowFragment extends Fragment {
-
+    OkHttpClient client = RestService.getClient();
     ListView list;
 
     public NowFragment() {
@@ -47,16 +47,31 @@ public class NowFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private void getSensorValues() {
-        final ArrayList<SensorValue> finalSensorValues;
+    public static NowFragment newInstance(String param1, String param2) {
+        NowFragment fragment = new NowFragment();
+        return fragment;
+    }
 
-        OkHttpClient client = RestService.getClient();
-        RestService restService = new RestService();
-        HttpUrl.Builder urlBuilder = restService.getUrlBuilder();
-        urlBuilder.addPathSegment("sensorValue");
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_now, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        list = view.findViewById(R.id.nowList);
+    }
+
+    private void getSensorValues() {
+        HttpUrl.Builder urlBuilder = RestService.getSensorValueUrlBuilder();
         urlBuilder.addPathSegment("last");
         urlBuilder.addQueryParameter("page", "0");
-        urlBuilder.addQueryParameter("sensorName", "temperature");
         urlBuilder.addQueryParameter("size", "10");
         urlBuilder.addQueryParameter("sortBy", "id");
         String url = urlBuilder.build().toString();
@@ -87,8 +102,13 @@ public class NowFragment extends Fragment {
                     Sensor sensor = sensorValue.getSensor();
                     Sensor tempSensor = new Sensor(sensor.getName(), sensor.getUnits(), sensor.getMaxAllowedValue(), sensor.getMinAllowedValue());
                     tempSensorValue.setSensor(tempSensor);
-                    if (Float.valueOf(sensorValue.getValue()) > sensor.getMaxAllowedValue() | Float.valueOf(sensorValue.getValue()) < sensor.getMinAllowedValue()) {
-                        tempSensorValue.setState(SensorValueState.DANGER);
+                    if (sensorValue.getValue() > sensor.getMaxAllowedValue() | sensorValue.getValue() < sensor.getMinAllowedValue()) {
+                        if (sensorValue.getValue() > (sensor.getMaxAllowedValue() * 1.5) | (sensorValue.getValue() * 1.5) < sensor.getMinAllowedValue()) {
+                            tempSensorValue.setState(SensorValueState.DANGER);
+                        }
+                        else {
+                            tempSensorValue.setState(SensorValueState.WARNING);
+                        }
                     }
                     else {
                         tempSensorValue.setState(SensorValueState.OK);
@@ -106,26 +126,5 @@ public class NowFragment extends Fragment {
 
             }
         });
-    }
-
-    public static NowFragment newInstance(String param1, String param2) {
-        NowFragment fragment = new NowFragment();
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_now, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        list = view.findViewById(R.id.nowList);
     }
 }

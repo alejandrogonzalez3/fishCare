@@ -1,15 +1,14 @@
 package es.tfm.fishcare;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
-
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -41,11 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Commit the transaction
         transaction.commit();
-
-        // Service worker to pull data from the backend...
-        // ... and notify on background if there is any problem.
-        PeriodicWorkRequest pullDataWorkRequest = new PeriodicWorkRequest.Builder(PullDataWorker.class,15, TimeUnit.MINUTES, 5, TimeUnit.MINUTES).build();
-        WorkManager.getInstance(this).enqueue(pullDataWorkRequest);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {

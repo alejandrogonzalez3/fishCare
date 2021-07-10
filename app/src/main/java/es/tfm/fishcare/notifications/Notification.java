@@ -1,39 +1,55 @@
 package es.tfm.fishcare.notifications;
 
+import es.tfm.fishcare.SensorValue;
+
 public class Notification {
 
-    private String title;
-    private String body;
-    private Integer imgId;
+    private Long id;
+    private SensorValue sensorValue;
+    private Boolean isRead;
+    private NotificationType notificationType;
 
-
-    public Notification(String title, String body, Integer imgId) {
-        this.title = title;
-        this.body = body;
-        this.imgId = imgId;
+    public Notification(SensorValue sensorValue, Boolean isRead, NotificationType notificationType) {
+        this.isRead = isRead;
+        this.sensorValue = sensorValue;
+        this.notificationType = notificationType;
     }
 
-    public String getTitle() {
-        return title;
+    public Notification(SensorValue sensorValue, NotificationType notificationType) {
+        this.sensorValue = sensorValue;
+        this.isRead = false;
+        this.notificationType = notificationType;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public SensorValue getSensorValue() {
+        return sensorValue;
     }
 
-    public String getBody() {
-        return body;
+    public void setSensorValue(SensorValue sensorValue) {
+        this.sensorValue = sensorValue;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public Boolean getRead() {
+        return isRead;
     }
 
-    public Integer getImgId() {
-        return imgId;
+    public void setRead(Boolean read) {
+        isRead = read;
     }
 
-    public void setImgId(Integer imgId) {
-        this.imgId = imgId;
+    public NotificationType getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(NotificationType notificationType) {
+        this.notificationType = notificationType;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

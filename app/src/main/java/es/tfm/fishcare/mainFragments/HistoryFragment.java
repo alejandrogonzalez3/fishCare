@@ -112,6 +112,8 @@ public class HistoryFragment extends Fragment {
     private void getSensorValues(LineChart chart, String sensorName, int drawableId) {
         HttpUrl.Builder urlBuilder = RestService.getSensorValueUrlBuilder();
         urlBuilder.addQueryParameter("sensorName", sensorName);
+        urlBuilder.addQueryParameter("page", "0");
+        urlBuilder.addQueryParameter("size", "15");
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder().url(url).build();
@@ -135,7 +137,7 @@ public class HistoryFragment extends Fragment {
                 ArrayList<Entry> newValues = new ArrayList<>();
                 int i = 0;
                 for (SensorValue sensorValue : sensorValues) {
-                    newValues.add(new Entry (i, Float.parseFloat(sensorValue.getValue())));
+                    newValues.add(new Entry (i, sensorValue.getValue()));
                     i+=1;
                 }
 

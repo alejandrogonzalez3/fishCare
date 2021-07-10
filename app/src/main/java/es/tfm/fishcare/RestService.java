@@ -20,8 +20,6 @@ public class RestService {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
         urlBuilder.addPathSegment("sensorValue");
         urlBuilder.addPathSegment("");
-        urlBuilder.addQueryParameter("page", "0");
-        urlBuilder.addQueryParameter("size", "15");
         return urlBuilder;
     }
 
@@ -43,6 +41,13 @@ public class RestService {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
         urlBuilder.addPathSegment("actuator");
         urlBuilder.addPathSegment("off");
+        return urlBuilder;
+    }
+
+    public static HttpUrl.Builder getNotificationUrlBuilder() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
+        urlBuilder.addPathSegment("notification");
+        urlBuilder.addPathSegment("");
         return urlBuilder;
     }
 }

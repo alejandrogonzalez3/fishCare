@@ -76,6 +76,8 @@ public class ActionsFragment extends Fragment {
         HttpUrl.Builder urlBuilder;
         urlBuilder = RestService.getActuatorUrlBuilder();
         urlBuilder.addPathSegment("all");
+        // TEMPORAL: THIS MUST BE SET USING USER HATCHERY ID (WHEN LOGIN BE INTEGRATED)
+        urlBuilder.addQueryParameter("hatcheryId", "1");
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder().url(url).build();

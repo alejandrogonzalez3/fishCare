@@ -73,6 +73,8 @@ public class NotificationsFragment extends Fragment {
         HttpUrl.Builder urlBuilder;
         urlBuilder = RestService.getNotificationUrlBuilder();
         urlBuilder.addPathSegment("notRead");
+        // TEMPORAL: THIS MUST BE SET USING USER HATCHERY ID (WHEN LOGIN BE INTEGRATED)
+        urlBuilder.addQueryParameter("hatcheryId", "1");
         urlBuilder.addQueryParameter("page", "0");
         urlBuilder.addQueryParameter("size", "10");
         urlBuilder.addQueryParameter("sortBy", "id");

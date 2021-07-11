@@ -20,6 +20,8 @@ public class RestService {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
         urlBuilder.addPathSegment("sensorValue");
         urlBuilder.addPathSegment("");
+        // TEMPORAL: THIS MUST BE SET USING USER HATCHERY ID (WHEN LOGIN BE INTEGRATED)
+        urlBuilder.addQueryParameter("hatcheryId", "1");
         return urlBuilder;
     }
 
@@ -47,6 +49,20 @@ public class RestService {
     public static HttpUrl.Builder getNotificationUrlBuilder() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
         urlBuilder.addPathSegment("notification");
+        urlBuilder.addPathSegment("");
+        return urlBuilder;
+    }
+
+    public static HttpUrl.Builder getUserUrlBuilder() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
+        urlBuilder.addPathSegment("user");
+        urlBuilder.addPathSegment("");
+        return urlBuilder;
+    }
+
+    public static HttpUrl.Builder getUserHatcheryUrlBuilder() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
+        urlBuilder.addPathSegment("hatchery");
         urlBuilder.addPathSegment("");
         return urlBuilder;
     }

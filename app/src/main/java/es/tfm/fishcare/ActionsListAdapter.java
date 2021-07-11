@@ -100,6 +100,8 @@ public class ActionsListAdapter extends BaseAdapter implements ListAdapter {
             urlBuilder = RestService.getActuatorOffUrlBuilder();
         }
         urlBuilder.addQueryParameter("name", sensorName);
+        // TEMPORAL: THIS MUST BE SET USING USER HATCHERY ID (WHEN LOGIN BE INTEGRATED)
+        urlBuilder.addQueryParameter("hatcheryId", "1");
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder().url(url).post(RequestBody.create("", null)).build();

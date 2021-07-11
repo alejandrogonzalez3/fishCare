@@ -67,25 +67,6 @@
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
-    <EditText
-        android:id="@+id/serverAddress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="ServerAddress:Port"
-        android:inputType="textUri"
-        android:minHeight="44dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:backgroundTint="@color/blue_400"
-        android:textColorHint="@color/blue_400_gray_friend"
-        android:textColor="@color/blue_400"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/rePassword" />
 
     <EditText
         android:id="@+id/email"
@@ -105,14 +86,14 @@
         android:textColorHint="@color/blue_400_gray_friend"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/serverAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/rePassword" />
 
     <EditText
         android:id="@+id/instanceName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/blue_400"
         android:ems="10"
@@ -126,26 +107,6 @@
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/email" />
-
-    <EditText
-        android:id="@+id/phoneNumber"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="Phone Number"
-        android:inputType="phone"
-        android:minHeight="44dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:backgroundTint="@color/blue_400"
-        android:textColorHint="@color/blue_400_gray_friend"
-        android:textColor="@color/blue_400"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/instanceName" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -177,6 +138,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/instanceName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -150,7 +150,7 @@ public class Signup extends AppCompatActivity {
     }
 
     private void createHatchery(Long userId, String instanceName) {
-        HttpUrl.Builder urlBuilder = RestService.getUserHatcheryUrlBuilder();
+        HttpUrl.Builder urlBuilder = RestService.getHatcheryUrlBuilder();
         urlBuilder.addPathSegment("create");
         String url = urlBuilder.build().toString();
         RequestBody requestBody = new MultipartBody.Builder()

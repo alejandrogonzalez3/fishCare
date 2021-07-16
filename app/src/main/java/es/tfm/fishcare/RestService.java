@@ -60,9 +60,16 @@ public class RestService {
         return urlBuilder;
     }
 
-    public static HttpUrl.Builder getUserHatcheryUrlBuilder() {
+    public static HttpUrl.Builder getHatcheryUrlBuilder() {
         HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
         urlBuilder.addPathSegment("hatchery");
+        urlBuilder.addPathSegment("");
+        return urlBuilder;
+    }
+
+    public static HttpUrl.Builder getSensorUrlBuilder() {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BACKEND_URL).newBuilder();
+        urlBuilder.addPathSegment("sensor");
         urlBuilder.addPathSegment("");
         return urlBuilder;
     }

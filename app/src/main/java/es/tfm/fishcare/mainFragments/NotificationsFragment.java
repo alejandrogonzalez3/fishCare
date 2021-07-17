@@ -26,6 +26,7 @@ import es.tfm.fishcare.Action;
 import es.tfm.fishcare.ActionsListAdapter;
 import es.tfm.fishcare.R;
 import es.tfm.fishcare.RestService;
+import es.tfm.fishcare.Session;
 import es.tfm.fishcare.notifications.Notification;
 import es.tfm.fishcare.notifications.NotificationListAdapter;
 import okhttp3.Call;
@@ -37,8 +38,11 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class NotificationsFragment extends Fragment {
-    OkHttpClient client = RestService.getClient();
-    ListView list;
+    private OkHttpClient client = RestService.getClient();
+    private ListView list;
+    private Session session;
+    private String jwt;
+    private String hatcheryId;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -66,6 +70,10 @@ public class NotificationsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Setup any handles to view objects here
         list = view.findViewById(R.id.notificationsList);
+        session = new Session(getContext());
+        jwt = session.getJwt();
+        hatcheryId = session.gethatcheryId();
+
         getNotifications();
     }
 
@@ -73,14 +81,13 @@ public class NotificationsFragment extends Fragment {
         HttpUrl.Builder urlBuilder;
         urlBuilder = RestService.getNotificationUrlBuilder();
         urlBuilder.addPathSegment("notRead");
-        // TEMPORAL: THIS MUST BE SET USING USER HATCHERY ID (WHEN LOGIN BE INTEGRATED)
-        urlBuilder.addQueryParameter("hatcheryId", "1");
+        urlBuilder.addQueryParameter("hatcheryId", hatcheryId);
         urlBuilder.addQueryParameter("page", "0");
         urlBuilder.addQueryParameter("size", "10");
         urlBuilder.addQueryParameter("sortBy", "id");
         String url = urlBuilder.build().toString();
 
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).header("Authorization", jwt).build();
 
         final Gson gson = new Gson();
         client.newCall(request).enqueue(new Callback() {
@@ -125,7 +132,7 @@ public class NotificationsFragment extends Fragment {
         urlBuilder.addQueryParameter("notificationId", notificationId.toString());
         String url = urlBuilder.build().toString();
 
-        Request request = new Request.Builder().url(url).post(RequestBody.create("", null)).build();
+        Request request = new Request.Builder().url(url).post(RequestBody.create("", null)).header("Authorization", jwt).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override

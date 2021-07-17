@@ -26,6 +26,7 @@ import es.tfm.fishcare.Sensor;
 import es.tfm.fishcare.SensorValue;
 import es.tfm.fishcare.SensorValueListAdapter;
 import es.tfm.fishcare.SensorValueState;
+import es.tfm.fishcare.Session;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -39,15 +40,16 @@ import okhttp3.Response;
  * create an instance of this fragment.
  */
 public class NowFragment extends Fragment {
-    OkHttpClient client = RestService.getClient();
-    ListView list;
+    private Session session;
+    private OkHttpClient client = RestService.getClient();
+    private ListView list;
+    private String jwt;
+    private String hatcheryId;
 
     public NowFragment() {
-        getSensorValues();
-        // Required empty public constructor
     }
 
-    public static NowFragment newInstance(String param1, String param2) {
+    public static NowFragment newInstance() {
         NowFragment fragment = new NowFragment();
         return fragment;
     }
@@ -66,6 +68,10 @@ public class NowFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         list = view.findViewById(R.id.nowList);
+        session = new Session(getContext());
+        jwt = session.getJwt();
+        hatcheryId = session.gethatcheryId();
+        getSensorValues();
     }
 
     private void getSensorValues() {
@@ -74,9 +80,10 @@ public class NowFragment extends Fragment {
         urlBuilder.addQueryParameter("page", "0");
         urlBuilder.addQueryParameter("size", "10");
         urlBuilder.addQueryParameter("sortBy", "id");
+        urlBuilder.addQueryParameter("hatcheryId", hatcheryId);
         String url = urlBuilder.build().toString();
 
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).header("Authorization", jwt).build();
 
         final Gson gson = new Gson();
         client.newCall(request).enqueue(new Callback() {

@@ -32,7 +32,10 @@ import okhttp3.Response;
 public class ActionsListAdapter extends BaseAdapter implements ListAdapter {
     private final Activity context;
     private final Action[] actions;
-    OkHttpClient client = RestService.getClient();
+    private OkHttpClient client = RestService.getClient();
+    private Session session;
+    private String jwt;
+    private String hatcheryId;
 
     public ActionsListAdapter(Activity context, Action[] actions) {
         this.context = context;
@@ -65,20 +68,20 @@ public class ActionsListAdapter extends BaseAdapter implements ListAdapter {
             convertView = inflater.inflate(R.layout.actions_list_item, parent,false);
         }
 
-        textAction = (TextView) convertView.findViewById(R.id.textActionItem);
-        actionOnButton = (Button) convertView.findViewById(R.id.buttonOnActionItem);
-        actionOffButton = (Button) convertView.findViewById(R.id.buttonOffActionItem);
+        textAction = convertView.findViewById(R.id.textActionItem);
+        actionOnButton = convertView.findViewById(R.id.buttonOnActionItem);
+        actionOffButton = convertView.findViewById(R.id.buttonOffActionItem);
 
-        // Get Actions current state and print button colors
-        // actionOnButton.setBackgroundColor(resolveColor(R.color.blue_400_gray_friend));
-        // actionOffButton.setBackgroundColor(resolveColor(R.color.blue_400));
+        session = new Session(context);
+        jwt = session.getJwt();
+        hatcheryId = session.gethatcheryId();
 
         textAction.setText(actions[position].getName());
-        actionOnButton.setOnClickListener((View.OnClickListener) v -> {
+        actionOnButton.setOnClickListener(v -> {
             // On
             doAction("on", actions[position].getName(), actionOnButton, actionOffButton);
         });
-        actionOffButton.setOnClickListener((View.OnClickListener) v -> {
+        actionOffButton.setOnClickListener(v -> {
             // Off
             doAction("off", actions[position].getName(), actionOnButton, actionOffButton);
         });
@@ -100,11 +103,10 @@ public class ActionsListAdapter extends BaseAdapter implements ListAdapter {
             urlBuilder = RestService.getActuatorOffUrlBuilder();
         }
         urlBuilder.addQueryParameter("name", sensorName);
-        // TEMPORAL: THIS MUST BE SET USING USER HATCHERY ID (WHEN LOGIN BE INTEGRATED)
-        urlBuilder.addQueryParameter("hatcheryId", "1");
+        urlBuilder.addQueryParameter("hatcheryId", hatcheryId);
         String url = urlBuilder.build().toString();
 
-        Request request = new Request.Builder().url(url).post(RequestBody.create("", null)).build();
+        Request request = new Request.Builder().url(url).post(RequestBody.create("", null)).header("Authorization", jwt).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override

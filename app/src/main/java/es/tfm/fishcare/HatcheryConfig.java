@@ -30,10 +30,13 @@ import okhttp3.Response;
 import static android.text.TextUtils.isEmpty;
 
 public class HatcheryConfig extends AppCompatActivity {
-    OkHttpClient client = RestService.getClient();
-    Button continueButton;
-    Spinner specie;
-    EditText pH_min_value, pH_max_value, do_min_value, do_max_value, temperature_min_value, temperature_max_value, salinity_min_value, salinity_max_value;
+    private OkHttpClient client = RestService.getClient();
+    private Button continueButton;
+    private Spinner specie;
+    private EditText pH_min_value, pH_max_value, do_min_value, do_max_value, temperature_min_value, temperature_max_value, salinity_min_value, salinity_max_value;
+    private Session session;
+    private String jwt;
+    private String hatcheryId;
 
     Map<String, String> units = new HashMap<String, String>() {{
         put("pH", "");
@@ -41,6 +44,7 @@ public class HatcheryConfig extends AppCompatActivity {
         put("temperature", "ºC");
         put("salinity", "ppt");
     }};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +60,10 @@ public class HatcheryConfig extends AppCompatActivity {
         temperature_max_value = findViewById(R.id.temperature_max_value);
         salinity_min_value = findViewById(R.id.salinity_min_value);
         salinity_max_value = findViewById(R.id.salinity_max_value);
+
+        session = new Session(this);
+        jwt = session.getJwt();
+        hatcheryId = session.gethatcheryId();
 
         String[] valores = {"", "crustáceos", "salmónidos"};
 
@@ -182,11 +190,10 @@ public class HatcheryConfig extends AppCompatActivity {
         urlBuilder.addQueryParameter("minAllowedValue", minAllowedValue);
         urlBuilder.addQueryParameter("maxAllowedValue", maxAllowedValue);
         urlBuilder.addQueryParameter("units", units);
-        // TEMPORAL: THIS MUST BE SET USING USER HATCHERY ID (WHEN LOGIN BE INTEGRATED)
-        urlBuilder.addQueryParameter("hatcheryId", "5");
+        urlBuilder.addQueryParameter("hatcheryId", hatcheryId);
         String url = urlBuilder.build().toString();
 
-        Request request = new Request.Builder().url(url).post(RequestBody.create("", null)).build();
+        Request request = new Request.Builder().url(url).post(RequestBody.create("", null)).header("Authorization", jwt).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override

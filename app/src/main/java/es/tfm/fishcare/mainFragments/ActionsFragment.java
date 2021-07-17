@@ -26,6 +26,7 @@ import es.tfm.fishcare.R;
 import es.tfm.fishcare.RestService;
 import es.tfm.fishcare.SensorValue;
 import es.tfm.fishcare.SensorValueState;
+import es.tfm.fishcare.Session;
 import es.tfm.fishcare.notifications.NotificationListAdapter;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -41,8 +42,11 @@ import okhttp3.Response;
  * create an instance of this fragment.
  */
 public class ActionsFragment extends Fragment {
-    OkHttpClient client = RestService.getClient();
-    ListView list;
+    private OkHttpClient client = RestService.getClient();
+    private ListView list;
+    private Session session;
+    private String jwt;
+    private String hatcheryId;
 
     public ActionsFragment() {
         // Required empty public constructor
@@ -69,6 +73,9 @@ public class ActionsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Setup any handles to view objects here
         list = view.findViewById(R.id.actionsList);
+        session = new Session(getContext());
+        jwt = session.getJwt();
+        hatcheryId = session.gethatcheryId();
         getActuators();
     }
 
@@ -76,11 +83,10 @@ public class ActionsFragment extends Fragment {
         HttpUrl.Builder urlBuilder;
         urlBuilder = RestService.getActuatorUrlBuilder();
         urlBuilder.addPathSegment("all");
-        // TEMPORAL: THIS MUST BE SET USING USER HATCHERY ID (WHEN LOGIN BE INTEGRATED)
-        urlBuilder.addQueryParameter("hatcheryId", "1");
+        urlBuilder.addQueryParameter("hatcheryId", hatcheryId);
         String url = urlBuilder.build().toString();
 
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).header("Authorization", jwt).build();
 
         final Gson gson = new Gson();
         client.newCall(request).enqueue(new Callback() {

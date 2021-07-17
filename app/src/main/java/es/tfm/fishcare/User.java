@@ -5,6 +5,7 @@ public class User {
     private Long id;
     private String userName;
     private String email;
+    private String jwt;
 
     public User(Long id, String userName, String email) {
         this.id = id;
@@ -34,5 +35,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 }

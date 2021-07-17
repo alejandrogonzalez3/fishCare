@@ -45,6 +45,7 @@ import es.tfm.fishcare.Sensor;
 import es.tfm.fishcare.SensorValue;
 import es.tfm.fishcare.SensorValueListAdapter;
 import es.tfm.fishcare.SensorValueState;
+import es.tfm.fishcare.Session;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -58,9 +59,11 @@ import okhttp3.Response;
  * create an instance of this fragment.
  */
 public class HistoryFragment extends Fragment {
-
-    LineChart doChart, phChart, temperatureChart, conductivityChart;
-    OkHttpClient client = RestService.getClient();
+    private LineChart doChart, phChart, temperatureChart, conductivityChart;
+    private OkHttpClient client = RestService.getClient();
+    private Session session;
+    private String jwt;
+    private String hatcheryId;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -91,22 +94,27 @@ public class HistoryFragment extends Fragment {
         temperatureChart = getActivity().findViewById(R.id.temperatureChart);
         conductivityChart = getActivity().findViewById(R.id.conductivityChart);
 
+        session = new Session(getContext());
+        jwt = session.getJwt();
+        hatcheryId = session.gethatcheryId();
+
         configChart(doChart, "dO (%)");
         renderData(140f, 80f, 200f, 15f, doChart);
-        getSensorValues(doChart,"test", R.drawable.fade_blue);
+        getSensorValues(doChart,"do", R.drawable.fade_blue);
 
         configChart(phChart, "pH");
         renderData(8f, 4f, 10f, 15f, phChart);
-        getSensorValues(phChart,"test", R.drawable.fade_green);
+        getSensorValues(phChart,"ph", R.drawable.fade_green);
 
         configChart(temperatureChart, "Temperature");
         renderData(24f, 8f, 30f, 15f, temperatureChart);
-        getSensorValues(temperatureChart,"test", R.drawable.fade_red);
+        getSensorValues(temperatureChart,"temperature", R.drawable.fade_red);
 
 
         configChart(conductivityChart, "Conductivity");
         renderData(1.5f, 50f, 60f, 15f, conductivityChart);
-        getSensorValues(conductivityChart,"test", R.drawable.fade_yellow);
+
+        getSensorValues(conductivityChart,"conductivity", R.drawable.fade_yellow);
     }
 
     private void getSensorValues(LineChart chart, String sensorName, int drawableId) {
@@ -114,9 +122,10 @@ public class HistoryFragment extends Fragment {
         urlBuilder.addQueryParameter("sensorName", sensorName);
         urlBuilder.addQueryParameter("page", "0");
         urlBuilder.addQueryParameter("size", "15");
+        urlBuilder.addQueryParameter("hatcheryId", hatcheryId);
         String url = urlBuilder.build().toString();
 
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).header("Authorization", jwt).build();
 
         final Gson gson = new Gson();
         client.newCall(request).enqueue(new Callback() {

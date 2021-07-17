@@ -33,14 +33,18 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Signup extends AppCompatActivity {
-    OkHttpClient client = RestService.getClient();
-    EditText userName, password, rePassword, instanceName, email;
-    Button signUp;
+    private OkHttpClient client = RestService.getClient();
+    private EditText userName, password, rePassword, instanceName, email;
+    private Button signUp;
+    private Session session;
+    private String jwt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        session = new Session(this);
 
         userName = findViewById(R.id.userName);
         password = findViewById(R.id.password);
@@ -143,7 +147,11 @@ public class Signup extends AppCompatActivity {
                 if (!response.isSuccessful()) {
                     throw new IOException("Unexpected code " + response);
                 }
+
                 User user = gson.fromJson(response.body().charStream(), User.class);
+                jwt = user.getJwt();
+                session.setJwt(jwt);
+
                 createHatchery(user.getId(), instanceName.getText().toString());
             }
         });
@@ -159,8 +167,9 @@ public class Signup extends AppCompatActivity {
                 .addFormDataPart("name", instanceName)
                 .build();
 
-        Request request = new Request.Builder().url(url).post(requestBody).build();
+        Request request = new Request.Builder().url(url).post(requestBody).header("Authorization", jwt).build();
 
+        final Gson gson = new Gson();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -174,7 +183,9 @@ public class Signup extends AppCompatActivity {
                 if (!response.isSuccessful()) {
                     throw new IOException("Unexpected code " + response);
                 }
-                // TO-DO: Pass info of the Hatchery Id to the next Activity
+                Hatchery hatchery = gson.fromJson(response.body().charStream(), Hatchery.class);
+                session.setHatcheryId(hatchery.getHatcheryId().toString());
+
                 Intent intent = new Intent(getApplicationContext(), HatcheryConfig.class);
                 startActivity(intent);
             }

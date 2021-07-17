@@ -30,7 +30,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class NotificationListAdapter extends BaseAdapter {
-    OkHttpClient client = RestService.getClient();
     private final Activity context;
     private final Notification[] notifications;
 

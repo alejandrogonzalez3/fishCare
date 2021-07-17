@@ -33,13 +33,17 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class PullDataWorker extends Worker {
-    OkHttpClient client = RestService.getClient();
+    private OkHttpClient client = RestService.getClient();
     private NotificationUtils mNotificationUtils;
-    Context context;
+    private Context context;
+    private Session session;
+    private String jwt;
 
     public PullDataWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
         this.context = context;
+        session = new Session(context);
+        jwt = session.getJwt();
         mNotificationUtils = new NotificationUtils(context);
     }
 
@@ -58,7 +62,7 @@ public class PullDataWorker extends Worker {
         urlBuilder.addQueryParameter("sortBy", "id");
         String url = urlBuilder.build().toString();
 
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).header("Authorization", jwt).build();
 
         final Gson gson = new Gson();
         client.newCall(request).enqueue(new Callback() {
@@ -123,7 +127,7 @@ public class PullDataWorker extends Worker {
                 .addFormDataPart("notificationType", notificationType.name())
                 .build();
 
-        Request request = new Request.Builder().url(url).post(requestBody).build();
+        Request request = new Request.Builder().url(url).post(requestBody).header("Authorization", jwt).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override

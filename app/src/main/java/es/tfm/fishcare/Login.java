@@ -21,8 +21,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import es.tfm.fishcare.notifications.NotificationUtils;
@@ -111,7 +114,7 @@ public class Login extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Login.this.runOnUiThread(() -> Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show());
                 e.printStackTrace();
             }
 
@@ -143,7 +146,7 @@ public class Login extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Login.this.runOnUiThread(() -> Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show());
                 e.printStackTrace();
             }
 

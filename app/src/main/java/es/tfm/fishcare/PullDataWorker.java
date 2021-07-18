@@ -38,12 +38,14 @@ public class PullDataWorker extends Worker {
     private Context context;
     private Session session;
     private String jwt;
+    private String hatcheryId;
 
     public PullDataWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
         this.context = context;
         session = new Session(context);
         jwt = session.getJwt();
+        hatcheryId = session.gethatcheryId();
         mNotificationUtils = new NotificationUtils(context);
     }
 
@@ -60,6 +62,7 @@ public class PullDataWorker extends Worker {
         urlBuilder.addQueryParameter("page", "0");
         urlBuilder.addQueryParameter("size", "10");
         urlBuilder.addQueryParameter("sortBy", "id");
+        urlBuilder.addQueryParameter("hatcheryId", hatcheryId);
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder().url(url).header("Authorization", jwt).build();

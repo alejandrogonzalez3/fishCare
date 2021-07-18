@@ -1,25 +1,41 @@
 package es.tfm.fishcare.mainFragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.HeaderViewListAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import es.tfm.fishcare.HatcheryConfig;
+import es.tfm.fishcare.MainActivity;
 import es.tfm.fishcare.R;
 import es.tfm.fishcare.RestService;
 import es.tfm.fishcare.Sensor;
@@ -32,6 +48,7 @@ import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -43,6 +60,11 @@ public class NowFragment extends Fragment {
     private Session session;
     private OkHttpClient client = RestService.getClient();
     private ListView list;
+    private TextView refreshDate;
+    private Button refreshButton, addSensorButton;
+    private FloatingActionButton addSensorFab;
+    private EditText sensorName, maxAllowedSensorValue, minAllowedSensorValue, sensorUnits;
+
     private String jwt;
     private String hatcheryId;
 
@@ -68,10 +90,78 @@ public class NowFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         list = view.findViewById(R.id.nowList);
+        refreshDate = view.findViewById(R.id.refresh_date);
+        refreshButton = view.findViewById(R.id.refresh_button);
+        refreshButton.setOnClickListener(v -> {
+            getSensorValues();
+        });
+        addSensorFab = view.findViewById(R.id.add_sensor_fab);
+        addSensorFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopup();
+            }
+        });
+
         session = new Session(getContext());
         jwt = session.getJwt();
         hatcheryId = session.gethatcheryId();
         getSensorValues();
+    }
+
+    public void showPopup(){
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View popupView = inflater.inflate(R.layout.popup_layout, null);
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        sensorName = popupView.findViewById(R.id.sensorName);
+        maxAllowedSensorValue = popupView.findViewById(R.id.maxAllowedSensorValue);
+        minAllowedSensorValue = popupView.findViewById(R.id.minAllowedSensorValue);
+        sensorUnits = popupView.findViewById(R.id.sensorUnits);
+        addSensorButton = popupView.findViewById(R.id.addSensorButton);
+        addSensorButton.setOnClickListener(v -> {
+            checkFields();
+            popupWindow.dismiss();
+        });
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
+    }
+
+    // TO-DO: EXTRACT TO UTILS, ITS REPEATED AT: SIGNUP (SEARCH FOR MORE REPETITIONS)
+    private boolean isEmpty(EditText field) {
+        String text = field.getText().toString();
+        return (TextUtils.isEmpty(text));
+    }
+
+    private void checkFields() {
+        if (isEmpty(sensorName)) {
+            sensorName.setError("sensor name is required");
+        }
+
+        if (isEmpty(maxAllowedSensorValue)) {
+            maxAllowedSensorValue.setError("max allowed value is required");
+        }
+
+        if (isEmpty(minAllowedSensorValue)) {
+            minAllowedSensorValue.setError("min allowed value is required");
+        }
+
+        if (isEmpty(sensorUnits)) {
+            sensorUnits.setError("sensor units is required");
+        }
+
+        if (sensorName.getError() != null | maxAllowedSensorValue.getError() != null | minAllowedSensorValue.getError() != null | sensorUnits.getError() != null) {
+            return;
+        }
+
+        createSensor(sensorName.getText().toString(), minAllowedSensorValue.getText().toString(), maxAllowedSensorValue.getText().toString(), sensorUnits.getText().toString());
     }
 
     private void getSensorValues() {
@@ -129,8 +219,42 @@ public class NowFragment extends Fragment {
                 getActivity().runOnUiThread(() -> {
                     SensorValueListAdapter adapter = new SensorValueListAdapter(getActivity(), customSensorValues);
                     list.setAdapter(adapter);
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMANY);
+                    refreshDate.setText("Last data refresh: " + formatter.format(new Date()));
                 });
 
+            }
+        });
+    }
+
+    private void createSensor(String sensorName, String minAllowedValue, String maxAllowedValue, String units) {
+        HttpUrl.Builder urlBuilder;
+        urlBuilder = RestService.getSensorUrlBuilder();
+        urlBuilder.addPathSegment("create");
+        urlBuilder.addQueryParameter("name", sensorName);
+        urlBuilder.addQueryParameter("minAllowedValue", minAllowedValue);
+        urlBuilder.addQueryParameter("maxAllowedValue", maxAllowedValue);
+        urlBuilder.addQueryParameter("units", units);
+        urlBuilder.addQueryParameter("hatcheryId", hatcheryId);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder().url(url).post(RequestBody.create("", null)).header("Authorization", jwt).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                // UI update must be done on Ui Thread
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                System.out.println(response);
             }
         });
     }

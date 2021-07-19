@@ -1,12 +1,14 @@
 package es.tfm.fishcare;
 
 public class Sensor {
+    private Long id;
     private String name;
     private String units;
     private Float maxAllowedValue;
     private Float minAllowedValue;
 
-    public Sensor(String name, String units, Float maxAllowedValue, Float minAllowedValue) {
+    public Sensor(Long id, String name, String units, Float maxAllowedValue, Float minAllowedValue) {
+        this.id = id;
         this.name = name;
         this.units = units;
         this.maxAllowedValue = maxAllowedValue;
@@ -43,5 +45,13 @@ public class Sensor {
 
     public void setMinAllowedValue(Float minAllowedValue) {
         this.minAllowedValue = minAllowedValue;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

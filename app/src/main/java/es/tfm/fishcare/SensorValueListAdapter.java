@@ -42,6 +42,8 @@ public class SensorValueListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.sensor_value_list_item, parent,false);
         }
 
+        convertView.setTag(sensorValues[position].getSensor().getId());
+
         TextView title = convertView.findViewById(R.id.sensor_value_item_title);
         TextView value = convertView.findViewById(R.id.sensor_value_item_value);
         TextView units = convertView.findViewById(R.id.sensor_value_item_units);

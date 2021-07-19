@@ -1,5 +1,6 @@
 package es.tfm.fishcare.mainFragments;
 
+import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HeaderViewListAdapter;
@@ -99,7 +101,7 @@ public class NowFragment extends Fragment {
         addSensorFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopup();
+                showPopup(false, null);
             }
         });
 
@@ -109,7 +111,7 @@ public class NowFragment extends Fragment {
         getSensorValues();
     }
 
-    public void showPopup(){
+    public void showPopup(Boolean fromUpdate, Long sensorId){
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View popupView = inflater.inflate(R.layout.popup_layout, null);
@@ -124,8 +126,11 @@ public class NowFragment extends Fragment {
         minAllowedSensorValue = popupView.findViewById(R.id.minAllowedSensorValue);
         sensorUnits = popupView.findViewById(R.id.sensorUnits);
         addSensorButton = popupView.findViewById(R.id.addSensorButton);
+        if (fromUpdate) {
+            addSensorButton.setText("Update Sensor");
+        }
         addSensorButton.setOnClickListener(v -> {
-            checkFields();
+            checkFields(fromUpdate, sensorId);
             popupWindow.dismiss();
         });
 
@@ -140,28 +145,37 @@ public class NowFragment extends Fragment {
         return (TextUtils.isEmpty(text));
     }
 
-    private void checkFields() {
-        if (isEmpty(sensorName)) {
-            sensorName.setError("sensor name is required");
-        }
+    private void checkFields(Boolean fromUpdate, Long sensorId) {
+        if (!fromUpdate) {
+            if (isEmpty(sensorName)) {
+                sensorName.setError("sensor name is required");
+            }
 
-        if (isEmpty(maxAllowedSensorValue)) {
-            maxAllowedSensorValue.setError("max allowed value is required");
-        }
+            if (isEmpty(maxAllowedSensorValue)) {
+                maxAllowedSensorValue.setError("max allowed value is required");
+            }
 
-        if (isEmpty(minAllowedSensorValue)) {
-            minAllowedSensorValue.setError("min allowed value is required");
-        }
+            if (isEmpty(minAllowedSensorValue)) {
+                minAllowedSensorValue.setError("min allowed value is required");
+            }
 
-        if (isEmpty(sensorUnits)) {
-            sensorUnits.setError("sensor units is required");
-        }
+            if (isEmpty(sensorUnits)) {
+                sensorUnits.setError("sensor units is required");
+            }
 
-        if (sensorName.getError() != null | maxAllowedSensorValue.getError() != null | minAllowedSensorValue.getError() != null | sensorUnits.getError() != null) {
-            return;
-        }
+            if (sensorName.getError() != null | maxAllowedSensorValue.getError() != null | minAllowedSensorValue.getError() != null | sensorUnits.getError() != null) {
+                return;
+            }
 
-        createSensor(sensorName.getText().toString(), minAllowedSensorValue.getText().toString(), maxAllowedSensorValue.getText().toString(), sensorUnits.getText().toString());
+            createSensor(sensorName.getText().toString(), minAllowedSensorValue.getText().toString(), maxAllowedSensorValue.getText().toString(), sensorUnits.getText().toString());
+        }
+        else {
+            if (sensorName.getText().toString().equals("") & maxAllowedSensorValue.getText().toString().equals("") & minAllowedSensorValue.getText().toString().equals("") & sensorUnits.getText().toString().equals("")) {
+                return;
+            }
+
+            updateSensor(sensorId, sensorName.getText().toString(), minAllowedSensorValue.getText().toString(), maxAllowedSensorValue.getText().toString(), sensorUnits.getText().toString());
+        }
     }
 
     private void getSensorValues() {
@@ -197,7 +211,7 @@ public class NowFragment extends Fragment {
                     SensorValue tempSensorValue = new SensorValue();
                     tempSensorValue.setDate(sensorValue.getDate());
                     Sensor sensor = sensorValue.getSensor();
-                    Sensor tempSensor = new Sensor(sensor.getName(), sensor.getUnits(), sensor.getMaxAllowedValue(), sensor.getMinAllowedValue());
+                    Sensor tempSensor = new Sensor(sensor.getId(), sensor.getName(), sensor.getUnits(), sensor.getMaxAllowedValue(), sensor.getMinAllowedValue());
                     tempSensorValue.setSensor(tempSensor);
                     if (sensorValue.getValue() > sensor.getMaxAllowedValue() | sensorValue.getValue() < sensor.getMinAllowedValue()) {
                         if (sensorValue.getValue() > (sensor.getMaxAllowedValue() * 1.5) | (sensorValue.getValue() * 1.5) < sensor.getMinAllowedValue()) {
@@ -219,6 +233,14 @@ public class NowFragment extends Fragment {
                 getActivity().runOnUiThread(() -> {
                     SensorValueListAdapter adapter = new SensorValueListAdapter(getActivity(), customSensorValues);
                     list.setAdapter(adapter);
+                    list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                            Long sensorId = (Long) arg1.getTag();
+                            showPopup(true, sensorId);
+                            return true;
+                        }
+                    });
 
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMANY);
                     refreshDate.setText("Last data refresh: " + formatter.format(new Date()));
@@ -240,6 +262,37 @@ public class NowFragment extends Fragment {
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder().url(url).post(RequestBody.create("", null)).header("Authorization", jwt).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                // UI update must be done on Ui Thread
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                System.out.println(response);
+            }
+        });
+    }
+
+    private void updateSensor(Long sensorId, String sensorName, String minAllowedValue, String maxAllowedValue, String units) {
+        HttpUrl.Builder urlBuilder;
+        urlBuilder = RestService.getSensorUrlBuilder();
+        urlBuilder.addPathSegment("update");
+        urlBuilder.addQueryParameter("id", sensorId.toString());
+        urlBuilder.addQueryParameter("name", sensorName);
+        urlBuilder.addQueryParameter("minAllowedValue", minAllowedValue);
+        urlBuilder.addQueryParameter("maxAllowedValue", maxAllowedValue);
+        urlBuilder.addQueryParameter("units", units);
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder().url(url).put(RequestBody.create("", null)).header("Authorization", jwt).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override

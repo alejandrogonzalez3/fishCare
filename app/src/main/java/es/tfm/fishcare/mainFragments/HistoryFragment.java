@@ -35,8 +35,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import es.tfm.fishcare.CustomMarkerView;
 import es.tfm.fishcare.R;
@@ -99,20 +102,20 @@ public class HistoryFragment extends Fragment {
         hatcheryId = session.gethatcheryId();
 
         configChart(doChart, "dO (%)");
-        renderData(140f, 80f, 200f, 15f, doChart);
+        renderData(120f, 15f, doChart);
         getSensorValues(doChart,"do", R.drawable.fade_blue);
 
         configChart(phChart, "pH");
-        renderData(8f, 4f, 10f, 15f, phChart);
+        renderData(20f, 15f, phChart);
         getSensorValues(phChart,"ph", R.drawable.fade_green);
 
         configChart(temperatureChart, "Temperature");
-        renderData(24f, 8f, 30f, 15f, temperatureChart);
+        renderData(35f, 15f, temperatureChart);
         getSensorValues(temperatureChart,"temperature", R.drawable.fade_red);
 
 
         configChart(conductivityChart, "Conductivity");
-        renderData(1.5f, 50f, 60f, 15f, conductivityChart);
+        renderData(40f, 15f, conductivityChart);
 
         getSensorValues(conductivityChart,"conductivity", R.drawable.fade_yellow);
     }
@@ -144,15 +147,19 @@ public class HistoryFragment extends Fragment {
                 Type listOfMyClassObject = new TypeToken<ArrayList<SensorValue>>() {}.getType();
                 List<SensorValue> sensorValues = gson.fromJson(response.body().charStream(), listOfMyClassObject);
                 ArrayList<Entry> newValues = new ArrayList<>();
+                ArrayList<Date> dates = new ArrayList<>();
                 int i = 0;
                 for (SensorValue sensorValue : sensorValues) {
                     newValues.add(new Entry (i, sensorValue.getValue()));
+                    dates.add(sensorValue.getDate());
                     i+=1;
                 }
+                float maximumLimit = sensorValues.get(0).getSensor().getMaxAllowedValue();
+                float minimumLimit = sensorValues.get(0).getSensor().getMinAllowedValue();
 
                 // UI update must be done on Ui Thread
                 getActivity().runOnUiThread(() -> {
-                    setData(newValues, chart, drawableId);
+                    setData(newValues, dates, chart, drawableId, maximumLimit, minimumLimit);
                     chart.setVisibility(View.INVISIBLE);
                     chart.setVisibility(View.VISIBLE);
                 });
@@ -162,13 +169,14 @@ public class HistoryFragment extends Fragment {
     }
 
     // Get each chart Date Values (now used on each chart)
-/*    public ArrayList<String> getDateValues() {
-
+    public ArrayList<String> getDateValues(List<Date> dates) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMANY);
         ArrayList<String> labels = new ArrayList<>();
-        for (int i = 0; i < 8; i++)
-            labels.add(i + " 15/06/21");
+        for (int i = 0; i < dates.size(); i++)
+
+            labels.add(formatter.format(dates.get(i)));
         return labels;
-    }*/
+    }
 
     public void configChart(LineChart chart, String description) {
         chart.setTouchEnabled(true);
@@ -182,14 +190,26 @@ public class HistoryFragment extends Fragment {
         des.setText(description);
     }
 
-    public void renderData(float maximumLimit, float minimumLimit, float yAxisMax, float xAxisMax, LineChart chart) {
+    public void renderData(float yAxisMax, float xAxisMax, LineChart chart) {
         XAxis xAxis = chart.getXAxis();
         xAxis.enableGridDashedLine(10f, 10f, 0f);
         xAxis.setAxisMaximum(xAxisMax);
         xAxis.setAxisMinimum(0f);
         xAxis.setDrawLimitLinesBehindData(true);
-/*        xAxis.setValueFormatter(new IndexAxisValueFormatter(getDateValues()));*/
 
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.removeAllLimitLines();
+        leftAxis.setAxisMaximum(yAxisMax);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setDrawZeroLine(false);
+        leftAxis.setDrawLimitLinesBehindData(false);
+
+        chart.getAxisRight().setEnabled(false);
+    }
+
+
+    private void setData(ArrayList<Entry> values, List<Date> dates, LineChart chart, int drawableId, float maximumLimit, float minimumLimit) {
         LimitLine ll1 = new LimitLine(maximumLimit, "Maximum Limit");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
@@ -206,17 +226,10 @@ public class HistoryFragment extends Fragment {
         leftAxis.removeAllLimitLines();
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaximum(yAxisMax);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        leftAxis.setDrawZeroLine(false);
-        leftAxis.setDrawLimitLinesBehindData(false);
 
-        chart.getAxisRight().setEnabled(false);
-    }
+/*        XAxis xAxis = chart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(getDateValues(dates)));*/
 
-
-    private void setData(ArrayList<Entry> values, LineChart chart, int drawableId) {
         LineDataSet set1;
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {

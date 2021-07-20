@@ -8,6 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import es.tfm.fishcare.notifications.Notification;
 
 public class SensorValueListAdapter extends BaseAdapter {
@@ -45,10 +49,13 @@ public class SensorValueListAdapter extends BaseAdapter {
         convertView.setTag(sensorValues[position].getSensor().getId());
 
         TextView title = convertView.findViewById(R.id.sensor_value_item_title);
+        TextView date = convertView.findViewById(R.id.sensor_value_item_date);
         TextView value = convertView.findViewById(R.id.sensor_value_item_value);
         TextView units = convertView.findViewById(R.id.sensor_value_item_units);
 
         title.setText(sensorValues[position].getSensor().getName());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.GERMANY);
+        date.setText(formatter.format(sensorValues[position].getDate()));
         value.setText(sensorValues[position].getValue().toString());
         if (!("").equals(sensorValues[position].getSensor().getUnits())) {
             units.setText("(" + sensorValues[position].getSensor().getUnits() + ")");

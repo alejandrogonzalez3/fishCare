@@ -1,18 +1,16 @@
-package es.tfm.fishcare;
+package es.tfm.fishcare.sensorValue;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
-import es.tfm.fishcare.notifications.Notification;
+import es.tfm.fishcare.R;
 
 public class SensorValueListAdapter extends BaseAdapter {
 

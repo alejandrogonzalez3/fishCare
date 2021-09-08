@@ -1,6 +1,6 @@
 package es.tfm.fishcare.notifications;
 
-import es.tfm.fishcare.SensorValue;
+import es.tfm.fishcare.sensorValue.SensorValue;
 
 public class Notification {
 

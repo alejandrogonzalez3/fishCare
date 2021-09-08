@@ -16,13 +16,13 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import es.tfm.fishcare.notifications.NotificationType;
 import es.tfm.fishcare.notifications.NotificationUtils;
+import es.tfm.fishcare.pojos.Sensor;
+import es.tfm.fishcare.sensorValue.SensorValue;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;

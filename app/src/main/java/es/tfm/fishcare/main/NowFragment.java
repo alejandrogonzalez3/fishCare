@@ -1,8 +1,6 @@
-package es.tfm.fishcare.mainFragments;
+package es.tfm.fishcare.main;
 
-import android.app.LauncherActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HeaderViewListAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -29,21 +26,17 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import es.tfm.fishcare.HatcheryConfig;
-import es.tfm.fishcare.MainActivity;
 import es.tfm.fishcare.R;
 import es.tfm.fishcare.RestService;
-import es.tfm.fishcare.Sensor;
-import es.tfm.fishcare.SensorValue;
-import es.tfm.fishcare.SensorValueListAdapter;
-import es.tfm.fishcare.SensorValueState;
+import es.tfm.fishcare.pojos.Sensor;
+import es.tfm.fishcare.sensorValue.SensorValue;
+import es.tfm.fishcare.sensorValue.SensorValueListAdapter;
+import es.tfm.fishcare.sensorValue.SensorValueState;
 import es.tfm.fishcare.Session;
 import okhttp3.Call;
 import okhttp3.Callback;

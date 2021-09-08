@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".main.MainActivity">
 
     <ListView
         android:id="@+id/actionsList"
@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_marginStart="80dp"
         android:text="Auto oxygenator on problems"
         app:layout_constraintStart_toEndOf="@+id/add_sensor_fab"
         app:layout_constraintTop_toBottomOf="@+id/waterPumpBehaviour" />
@@ -35,13 +36,14 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_marginStart="80dp"
         android:text="Auto water pump on problems"
         app:layout_constraintStart_toEndOf="@+id/add_sensor_fab"
         app:layout_constraintTop_toBottomOf="@+id/actionsList" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_sensor_fab"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"

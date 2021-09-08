@@ -7,27 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import es.tfm.fishcare.R;
-import es.tfm.fishcare.RestService;
-import es.tfm.fishcare.Sensor;
-import es.tfm.fishcare.SensorValue;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import es.tfm.fishcare.pojos.Sensor;
+import es.tfm.fishcare.sensorValue.SensorValue;
 
 public class NotificationListAdapter extends BaseAdapter {
     private final Activity context;

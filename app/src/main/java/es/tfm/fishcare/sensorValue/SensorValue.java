@@ -1,6 +1,8 @@
-package es.tfm.fishcare;
+package es.tfm.fishcare.sensorValue;
 
 import java.util.Date;
+
+import es.tfm.fishcare.pojos.Sensor;
 
 public class SensorValue {
 

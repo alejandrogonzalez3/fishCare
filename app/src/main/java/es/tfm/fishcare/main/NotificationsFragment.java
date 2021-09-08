@@ -1,4 +1,4 @@
-package es.tfm.fishcare.mainFragments;
+package es.tfm.fishcare.main;
 
 import android.os.Bundle;
 
@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -22,8 +21,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.tfm.fishcare.Action;
-import es.tfm.fishcare.ActionsListAdapter;
 import es.tfm.fishcare.R;
 import es.tfm.fishcare.RestService;
 import es.tfm.fishcare.Session;

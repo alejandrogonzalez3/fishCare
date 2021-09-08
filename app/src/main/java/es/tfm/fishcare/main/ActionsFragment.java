@@ -1,4 +1,4 @@
-package es.tfm.fishcare.mainFragments;
+package es.tfm.fishcare.main;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,14 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.data.Entry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,18 +25,14 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import es.tfm.fishcare.Action;
-import es.tfm.fishcare.ActionsListAdapter;
+import es.tfm.fishcare.actions.Action;
+import es.tfm.fishcare.actions.ActionsListAdapter;
 import es.tfm.fishcare.R;
 import es.tfm.fishcare.RestService;
-import es.tfm.fishcare.SensorValue;
-import es.tfm.fishcare.SensorValueState;
 import es.tfm.fishcare.Session;
-import es.tfm.fishcare.notifications.NotificationListAdapter;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;

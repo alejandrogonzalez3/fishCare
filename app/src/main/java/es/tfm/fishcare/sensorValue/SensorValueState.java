@@ -1,4 +1,4 @@
-package es.tfm.fishcare;
+package es.tfm.fishcare.sensorValue;
 
 public enum SensorValueState {
     OK,

@@ -1,4 +1,4 @@
-package es.tfm.fishcare;
+package es.tfm.fishcare.main;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -7,17 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.concurrent.TimeUnit;
-
-import es.tfm.fishcare.mainFragments.ActionsFragment;
-import es.tfm.fishcare.mainFragments.HistoryFragment;
-import es.tfm.fishcare.mainFragments.NotificationsFragment;
-import es.tfm.fishcare.mainFragments.NowFragment;
+import es.tfm.fishcare.R;
+import es.tfm.fishcare.main.ActionsFragment;
+import es.tfm.fishcare.main.HistoryFragment;
+import es.tfm.fishcare.main.NotificationsFragment;
+import es.tfm.fishcare.main.NowFragment;
 
 public class MainActivity extends AppCompatActivity {
 

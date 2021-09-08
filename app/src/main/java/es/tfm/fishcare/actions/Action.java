@@ -1,4 +1,4 @@
-package es.tfm.fishcare;
+package es.tfm.fishcare.actions;
 
 public class Action {
     private String name;

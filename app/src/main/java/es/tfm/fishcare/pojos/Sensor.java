@@ -1,4 +1,4 @@
-package es.tfm.fishcare;
+package es.tfm.fishcare.pojos;
 
 public class Sensor {
     private Long id;
